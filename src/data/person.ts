@@ -62,15 +62,15 @@ export const person = {
     },
     {
       '@type': 'Organization',
-      name: 'TeamCalendar',
+      name: 'TeamCalendar.com',
       url: 'https://teamcalendar.com',
       description: 'A service that combines sports team schedules into a single calendar.',
     },
     {
       '@type': 'Organization',
-      name: 'Cruised',
+      name: 'Cruised.com',
       url: 'https://cruised.com',
-      description: 'A review service for Cruise Ship Staterooms.',
+      description: 'A family-owned travel agency focused on corporate group travel.',
     },
   ],
   award: [
