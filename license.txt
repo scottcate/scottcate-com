@@ -1,0 +1,41 @@
+scottcate.com — License
+=======================
+
+Open source @ https://github.com/scottcate/scottcate-com
+
+This repository holds two different things, and they are licensed differently.
+
+
+1. THE CONTENT — Copyright (c) Scott Cate. All rights reserved.
+----------------------------------------------------------------
+
+Scott Cate owns the content of this blog: the posts, articles, writing,
+photos, and other media published on scottcate.com. That covers the
+Markdown/MDX posts in src/content/ and the media under public/.
+
+Scott writes the content. You're welcome to read it, link to it, and share
+links to it. Republishing or reusing the content itself requires Scott's
+permission. Reach out on X (https://x.com/scottcate) or LinkedIn
+(https://www.linkedin.com/in/scottcate).
+
+
+2. THE TECHNOLOGY — NO LICENSE
+-------------------------------
+
+The technology that runs this blog — the Astro site, components, layouts,
+styles, scripts, build configuration, and deployment workflow — was written
+by AI agents, not by Scott as a human author.
+
+Because it was written by agents and not by Scott, the technology carries
+NO LICENSE. Scott does not claim authorship or copyright in it and grants
+no license to it.
+
+Scott writes the content on this blog, not the technology.
+
+
+THIRD-PARTY SOFTWARE
+--------------------
+
+Open-source dependencies used to build the site (Astro and the other
+packages listed in package.json) are not covered by this file. Each remains
+under its own license.

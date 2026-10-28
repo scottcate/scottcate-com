@@ -61,7 +61,7 @@ Unknown URLs land on `404.html`, which mimics WordPress's "guess the post from t
 
 ## Re-importing from WordPress
 
-`npm run import:wordpress` re-pulls all posts from the public WP REST API and **overwrites** `src/content/posts/`. Run it only before the cutover. It is kept for reference and should not be needed afterwards.
+`npm run import:wordpress` re-pulls all posts from the public WP REST API and **overwrites** the imported `.md` posts in `src/content/posts/` (hand-written `.mdx` posts are left alone). Run it only before the cutover. It is kept for reference and should not be needed afterwards.
 
 ## DNS / GitHub Pages setup (one time)
 
@@ -69,3 +69,7 @@ Unknown URLs land on `404.html`, which mimics WordPress's "guess the post from t
 2. Repo **Settings → Pages → Source: GitHub Actions**.
 3. `public/CNAME` already contains `scottcate.com`. In Cloudflare, point the apex to GitHub Pages (`A` 185.199.108.153 / .109 / .110 / .111, or CNAME-flatten to `<user>.github.io`) and `www` CNAME to `<user>.github.io`.
 4. Back in Pages settings, tick **Enforce HTTPS** once the certificate is issued.
+
+## License
+
+See [license.txt](license.txt), also published at https://scottcate.com/license.txt. Scott Cate owns the blog's content (posts, writing, photos). The technology that runs the blog was written by AI agents and carries **no license**. Third-party packages keep their own licenses.
