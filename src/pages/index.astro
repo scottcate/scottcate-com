@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import { categoryUrl, getPosts } from '../lib/posts';
+import { person } from '../data/person';
+import taxonomy from '../data/taxonomy.json';
+import { SITE } from '../consts';
+
+const posts = await getPosts();
+const latest = posts.slice(0, 6);
+const counts = new Map<string, number>();
+for (const post of posts) counts.set(post.data.category, (counts.get(post.data.category) ?? 0) + 1);
+const categories = taxonomy.categories
+  .map((c) => ({ ...c, count: counts.get(c.slug) ?? 0 }))
+  .filter((c) => c.count > 0)
+  .sort((a, b) => b.count - a.count);
+---
+
+<BaseLayout type="profile" description={person.description}>
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <img class="hero-photo" src={SITE.avatar} alt="Scott Cate" width="160" height="160" />
+      <div>
+        <p class="eyebrow">{SITE.tagline}</p>
+        <h1>Hi, I'm Scott Cate.</h1>
+        <p class="lede">
+          Husband, father, author, and technical founder. I build SaaS products and write about technology,
+          travel, Visual Studio tricks, and family.
+        </p>
+        <ContactLinks />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="building">
+    <h2 id="building" class="section-title">What I'm building</h2>
+    <ul class="ventures">
+      {
+        person.owns.map((org) => (
+          <li>
+            <a href={org.url} target="_blank" rel="noopener">
+              <strong>{org.name}</strong>
+              <span>{org.description}</span>
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={person.worksFor.url} target="_blank" rel="noopener">
+          <strong>{person.worksFor.name}</strong>
+          <span>The software company behind it all.</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="wrap section" aria-labelledby="latest">
+    <div class="section-head">
+      <h2 id="latest" class="section-title">Latest posts</h2>
+      <a href="/posts/">All {posts.length} posts →</a>
+    </div>
+    <div class="post-grid">
+      {latest.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="topics">
+    <h2 id="topics" class="section-title">Browse by topic</h2>
+    <ul class="chips">
+      {
+        categories.map((c) => (
+          <li>
+            <a href={categoryUrl(c.slug)}>
+              {c.name} <span class="muted">{c.count}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

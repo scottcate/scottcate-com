@@ -1,0 +1,65 @@
+---
+import { SITE, SOCIAL } from '../consts';
+
+interface Props {
+  title: string;
+  url: string;
+}
+const { title, url } = Astro.props;
+
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+const via = SOCIAL.x.handle.replace('@', '');
+
+const targets = [
+  { name: 'X', href: `https://x.com/intent/post?url=${u}&text=${t}&via=${via}` },
+  { name: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
+  { name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+  { name: 'Bluesky', href: `https://bsky.app/intent/compose?text=${encodeURIComponent(`${title} ${url}`)}` },
+  { name: 'Reddit', href: `https://www.reddit.com/submit?url=${u}&title=${t}` },
+  { name: 'Hacker News', href: `https://news.ycombinator.com/submitlink?u=${u}&t=${t}` },
+  { name: 'Email', href: `mailto:?subject=${t}&body=${encodeURIComponent(`${title} — ${SITE.name}\n${url}`)}` },
+];
+---
+
+<section class="share" aria-labelledby="share-heading">
+  <h2 id="share-heading" class="share-heading">Share this post</h2>
+  <ul>
+    {
+      targets.map((target) => (
+        <li>
+          <a href={target.href} target={target.name === 'Email' ? undefined : '_blank'} rel="noopener">
+            {target.name}
+          </a>
+        </li>
+      ))
+    }
+    <li><button type="button" class="share-copy" data-url={url}>Copy link</button></li>
+    <li hidden class="share-native-item">
+      <button type="button" class="share-native" data-url={url} data-title={title}>More…</button>
+    </li>
+  </ul>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.share-copy').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.url!);
+        button.textContent = 'Copied!';
+      } catch {
+        button.textContent = 'Copy failed';
+      }
+      setTimeout(() => (button.textContent = 'Copy link'), 2000);
+    });
+  });
+
+  if ('share' in navigator) {
+    document.querySelectorAll<HTMLButtonElement>('.share-native').forEach((button) => {
+      button.closest('li')!.hidden = false;
+      button.addEventListener('click', () => {
+        navigator.share({ title: button.dataset.title, url: button.dataset.url }).catch(() => {});
+      });
+    });
+  }
+</script>

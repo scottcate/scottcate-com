@@ -1,0 +1,23 @@
+---
+import { SITE } from '../consts';
+import ContactLinks from './ContactLinks.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="footer-title">{SITE.title}</p>
+      <p class="muted">{SITE.tagline}</p>
+    </div>
+    <ContactLinks variant="icons" />
+    <nav aria-label="Footer">
+      <a href="/posts/">All posts</a>
+      <a href="/contact/">Contact</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="/sitemap.xml">Sitemap</a>
+    </nav>
+    <p class="muted small">© {year} Scott Cate</p>
+  </div>
+</footer>

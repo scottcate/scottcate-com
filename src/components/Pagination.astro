@@ -1,0 +1,37 @@
+---
+import type { Page } from '../lib/posts';
+
+interface Props {
+  page: Page<unknown>;
+}
+const { page } = Astro.props;
+
+// First, last, and a window around the current page, with gaps marked as null.
+const numbers: (number | null)[] = [];
+for (let n = 1; n <= page.lastPage; n++) {
+  if (n === 1 || n === page.lastPage || Math.abs(n - page.current) <= 1) numbers.push(n);
+  else if (numbers.at(-1) !== null) numbers.push(null);
+}
+---
+
+{
+  page.lastPage > 1 && (
+    <nav class="pagination" aria-label="Pagination">
+      {page.prev ? <a href={page.prev} rel="prev">← Newer</a> : <span />}
+      <ol>
+        {numbers.map((n) =>
+          n === null ? (
+            <li aria-hidden="true">…</li>
+          ) : (
+            <li>
+              <a href={page.url(n)} aria-current={n === page.current ? 'page' : undefined}>
+                {n}
+              </a>
+            </li>
+          ),
+        )}
+      </ol>
+      {page.next ? <a href={page.next} rel="next">Older →</a> : <span />}
+    </nav>
+  )
+}

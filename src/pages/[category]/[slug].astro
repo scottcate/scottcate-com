@@ -1,0 +1,126 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareLinks from '../../components/ShareLinks.astro';
+import ContactLinks from '../../components/ContactLinks.astro';
+import { categoryName, categoryUrl, formatDate, getPosts, postUrl, tagName, tagUrl, type Post } from '../../lib/posts';
+import { SITE } from '../../consts';
+import { PERSON_ID } from '../../data/person';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { category: post.data.category, slug: post.data.slug },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+interface Props {
+  post: Post;
+  newer?: Post;
+  older?: Post;
+}
+const { post, newer, older } = Astro.props;
+const { title, date, updated, category, tags, image } = post.data;
+const description = post.data.description || `${title} – a post by Scott Cate.`;
+const { Content } = await render(post);
+
+const url = new URL(postUrl(post), SITE.url).href;
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    mainEntityOfPage: url,
+    url,
+    headline: title,
+    description,
+    datePublished: date.toISOString(),
+    dateModified: (updated ?? date).toISOString(),
+    author: { '@id': PERSON_ID },
+    publisher: { '@id': PERSON_ID },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    articleSection: categoryName(category),
+    ...(tags.length && { keywords: tags.map(tagName).join(', ') }),
+    ...(image && { image: new URL(image.src, SITE.url).href }),
+    inLanguage: SITE.locale,
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: categoryName(category), item: new URL(categoryUrl(category), SITE.url).href },
+      { '@type': 'ListItem', position: 3, name: title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image?.src}
+  imageAlt={image?.alt || title}
+  type="article"
+  publishedTime={date}
+  modifiedTime={updated}
+  schema={schema}
+>
+  <article class="wrap-narrow post">
+    <header class="post-header">
+      <p class="meta">
+        <a href={categoryUrl(category)}>{categoryName(category)}</a>
+        <span aria-hidden="true">·</span>
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+      </p>
+      <h1>{title}</h1>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      tags.length > 0 && (
+        <ul class="tags" aria-label="Tags">
+          {tags.map((tag) => (
+            <li>
+              <a href={tagUrl(tag)}>#{tagName(tag)}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <ShareLinks title={title} url={url} />
+
+    <aside class="author-box">
+      <img src={SITE.avatar} alt="Scott Cate" width="64" height="64" loading="lazy" />
+      <div>
+        <p class="author-name"><a href="/author/scottcate/">Scott Cate</a></p>
+        <p class="muted small">Comments are closed here — join the conversation on social.</p>
+        <ContactLinks />
+      </div>
+    </aside>
+
+    <nav class="post-nav" aria-label="More posts">
+      {
+        older ? (
+          <a href={postUrl(older)} rel="prev">
+            <span class="muted small">← Older</span>
+            <span>{older.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newer && (
+          <a href={postUrl(newer)} rel="next" class="next">
+            <span class="muted small">Newer →</span>
+            <span>{newer.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>

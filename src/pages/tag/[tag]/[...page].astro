@@ -1,0 +1,19 @@
+---
+import ArchiveLayout from '../../../layouts/ArchiveLayout.astro';
+import { getPosts, paginate, usedTags, type Page, type Post } from '../../../lib/posts';
+import taxonomy from '../../../data/taxonomy.json';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return usedTags(posts).flatMap((tag) =>
+    paginate(
+      posts.filter((post) => post.data.tags.includes(tag.slug)),
+      `/tag/${tag.slug}/`,
+    ).map(({ param, page }) => ({ params: { tag: tag.slug, page: param }, props: { tag, page } })),
+  );
+}
+
+const { tag, page } = Astro.props as { tag: (typeof taxonomy.tags)[number]; page: Page<Post> };
+---
+
+<ArchiveLayout title={`#${tag.name}`} eyebrow="Tag" description={tag.description} page={page} />

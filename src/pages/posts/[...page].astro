@@ -1,0 +1,12 @@
+---
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import { getPosts, paginate, type Page, type Post } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  return paginate(await getPosts(), '/posts/').map(({ param, page }) => ({ params: { page: param }, props: { page } }));
+}
+
+const { page } = Astro.props as { page: Page<Post> };
+---
+
+<ArchiveLayout title="Posts" eyebrow="The blog" description="Everything I've written, newest first." page={page} />

@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE, SOCIAL } from '../consts';
+import { person, PERSON_ID } from '../data/person';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article' | 'profile';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  /** Extra JSON-LD nodes added to the page's @graph (BlogPosting, CollectionPage, …). */
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = SITE.avatar,
+  imageAlt = SITE.author,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  schema = [],
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} – ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const imageUrl = new URL(image, SITE.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      url: `${SITE.url}/`,
+      name: SITE.name,
+      description: SITE.tagline,
+      inLanguage: SITE.locale,
+      publisher: { '@id': PERSON_ID },
+    },
+    person,
+    ...schema,
+  ],
+};
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="author" content={SITE.author} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)" />
+
+    <link rel="icon" href="/wp-content/uploads/2016/07/cropped-c8-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/wp-content/uploads/2016/07/cropped-c8-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/wp-content/uploads/2016/07/cropped-c8-180x180.png" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} » Feed`} href="/rss.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? SITE.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={imageAlt} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+    {type === 'article' && <meta property="article:author" content={SITE.url} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SOCIAL.x.handle} />
+    <meta name="twitter:creator" content={SOCIAL.x.handle} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <script is:inline>
+      // Apply the saved or system theme before first paint to avoid a flash.
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

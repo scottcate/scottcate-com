@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const domains = ['COM', 'NET', 'CO', 'IO', 'AI', 'CA', 'CC', 'DEV', 'INFO', 'ME', 'PRO', 'US'].map((tld) => `CRUISED.${tld}`);
+---
+
+<BaseLayout title="CRUISED Domain Portfolio" description="The CRUISED domain portfolio is available individually or as a package.">
+  <article class="wrap-narrow page">
+    <h1>CRUISED Domain Portfolio</h1>
+    <div class="prose">
+      <p>
+        If you are interested in buying the CRUISED domain portfolio please email your asking price and preferred domain
+        escrow service.
+      </p>
+      <p>Scott <span aria-label="at">a t</span> CRUISED.com</p>
+      <p>The following domains are available individually or as a package.</p>
+      <ul class="domain-list">
+        {
+          domains.map((d) => (
+            <li>
+              <a href={`https://${d}`}>{d}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </article>
+</BaseLayout>

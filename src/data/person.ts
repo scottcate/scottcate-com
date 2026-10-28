@@ -1,0 +1,91 @@
+// Person schema for Scott Cate, carried over from the WordPress theme's JSON-LD.
+// Emitted on every page; posts reference it by @id as their author.
+export const PERSON_ID = 'https://scottcate.com/#person';
+
+export const person = {
+  '@type': 'Person',
+  '@id': PERSON_ID,
+  name: 'Scott Cate',
+  url: 'https://scottcate.com',
+  image: 'https://secure.gravatar.com/avatar/3f1ea02fe9aa1d7c51712b1f20507730',
+  jobTitle: 'Technical Founder',
+  description:
+    'Scott Cate is a husband, father, author, and seasoned technical founder with expertise in software development, SaaS products, and marketing automation. He is the creator of 301.Pro, TeamCalendar.com, and Cruised.com',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Oval Software, LLC',
+    url: 'https://ov.al',
+  },
+  knowsAbout: [
+    'Software Development',
+    'SaaS Products',
+    'Technical SEO',
+    'Marketing Automation',
+    'Link Routing',
+    'QR Code Technology',
+    'Cloud Computing',
+    'Microsoft Azure',
+  ],
+  affiliation: [
+    { '@type': 'Organization', name: '301.Pro', url: 'https://301pro.com' },
+    { '@type': 'Organization', name: 'Microsoft Azure', url: 'https://azure.microsoft.com' },
+    { '@type': 'Organization', name: 'Amazon AWS', url: 'https://aws.amazon.com' },
+  ],
+  sameAs: [
+    'https://www.linkedin.com/in/scottcate',
+    'https://bsky.app/profile/scottcate.bsky.social',
+    'https://www.goodreads.com/scottcate',
+    'https://about.me/scottcate',
+    'https://theorg.com/dashboard/301-pro/org-chart/scott-cate',
+    'https://gravatar.com/scottcate',
+    'https://medium.com/@scottcate',
+    'https://imdb.me/scottcate',
+    'https://x.com/scottcate',
+    'https://www.amazon.com/author/scottcate',
+    'https://www.crunchbase.com/person/scott-cate',
+    'https://facebook.com/scottcateaz',
+    'https://youtube.com/@scottcate',
+    'https://www.instagram.com/scottcate',
+    'https://www.tiktok.com/@scottcate',
+    'https://www.pinterest.com/scottcate',
+    'https://www.reddit.com/user/scottcate',
+    'https://www.twitch.tv/scottcate',
+    'https://www.github.com/scottcate',
+    'https://scholar.google.com/citations?hl=en&user=cllpgyMAAAAJ',
+  ],
+  owns: [
+    {
+      '@type': 'Organization',
+      name: '301.Pro',
+      url: 'https://301.pro',
+      description: 'A link-shortening service offering a rules engine for real-time marketing and dynamic QR code capabilities.',
+    },
+    {
+      '@type': 'Organization',
+      name: 'TeamCalendar',
+      url: 'https://teamcalendar.com',
+      description: 'A service that combines sports team schedules into a single calendar.',
+    },
+    {
+      '@type': 'Organization',
+      name: 'Cruised',
+      url: 'https://cruised.com',
+      description: 'A review service for Cruise Ship Staterooms.',
+    },
+  ],
+  award: [
+    'Microsoft Cloud Certified',
+    'AWS Certified',
+    'Microsoft Regional Director',
+    'Microsoft MVP (Most Valuable Professional)',
+    'Speaker at Dozens of International Tech Conferences',
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: 'support@301.Pro',
+    telephone: '+1-916-PRO-LINK',
+    url: 'https://301.pro',
+    availableLanguage: ['English'],
+  },
+};

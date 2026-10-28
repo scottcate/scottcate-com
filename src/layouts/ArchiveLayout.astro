@@ -1,0 +1,52 @@
+---
+// Shared listing page for /posts/, /category/*, /tag/* and /author/* archives.
+import BaseLayout from './BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import Pagination from '../components/Pagination.astro';
+import { postUrl, type Page, type Post } from '../lib/posts';
+import { SITE } from '../consts';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  description?: string;
+  page: Page<Post>;
+}
+const { title, eyebrow, description, page } = Astro.props;
+
+const pageTitle = page.current > 1 ? `${title} – Page ${page.current}` : title;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': new URL(Astro.url.pathname, SITE.url).href,
+    url: new URL(Astro.url.pathname, SITE.url).href,
+    name: pageTitle,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: page.items.map((post, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: new URL(postUrl(post), SITE.url).href,
+      })),
+    },
+  },
+];
+---
+
+<BaseLayout title={pageTitle} description={description || `${title} from ${SITE.title}.`} schema={schema}>
+  <div class="wrap">
+    <header class="archive-header">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {description && <p class="lede">{description}</p>}
+      <p class="muted small">
+        {page.total} {page.total === 1 ? 'post' : 'posts'}{page.lastPage > 1 && ` · page ${page.current} of ${page.lastPage}`}
+      </p>
+    </header>
+    <div class="post-grid">
+      {page.items.map((post) => <PostCard post={post} />)}
+    </div>
+    <Pagination page={page} />
+  </div>
+</BaseLayout>

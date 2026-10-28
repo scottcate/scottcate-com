@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = '/wp-content/uploads/photo-gallery/imported_from_media_libray';
+const photos = [
+  { src: `${base}/scott-cate-profile-headhot.png`, alt: 'Scott Cate in a high rise office', width: 1024, height: 768 },
+  { src: `${base}/scott-cate-street.png`, alt: 'Scott Cate in a jacket on the street', width: 1024, height: 768 },
+  { src: `${base}/scott-on-stage.jpeg`, alt: 'Scott Cate on Stage', width: 427, height: 427 },
+  {
+    src: `${base}/scott-cate-ocean-e1741369777327.jpg`,
+    alt: 'Scott Cate with a hat on overlooking the ocean in Lima, Peru',
+    width: 500,
+    height: 500,
+  },
+];
+
+const schema = [
+  {
+    '@type': 'ImageGallery',
+    name: 'Scott Cate Profile Photos',
+    image: photos.map((p) => ({
+      '@type': 'ImageObject',
+      contentUrl: `https://scottcate.com${p.src}`,
+      caption: p.alt,
+      creator: { '@id': 'https://scottcate.com/#person' },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Scott Cate Profile Photos"
+  description="Profile and press photos of Scott Cate."
+  image={photos[0].src}
+  imageAlt={photos[0].alt}
+  schema={schema}
+>
+  <article class="wrap page">
+    <h1>Scott Cate Profile Photos</h1>
+    <p class="lede">Feel free to use these photos for event bios, articles, and introductions.</p>
+    <ul class="gallery">
+      {
+        photos.map((p) => (
+          <li>
+            <a href={p.src}>
+              <img src={p.src} alt={p.alt} width={p.width} height={p.height} loading="lazy" decoding="async" />
+            </a>
+            <p class="muted small">{p.alt}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </article>
+</BaseLayout>

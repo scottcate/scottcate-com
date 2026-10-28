@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts, postUrl } from '../lib/posts';
+
+// WordPress answered unknown URLs by guessing a post from the last path segment
+// (e.g. /tricks/003/ → /vstricks/003-showorhide-…/). GitHub Pages can't redirect,
+// so the 404 page does the same lookup client-side.
+const slugs = Object.fromEntries((await getPosts()).map((post) => [post.data.slug, postUrl(post)]));
+---
+
+<BaseLayout title="Page not found" noindex>
+  <article class="wrap-narrow page">
+    <h1>Page not found</h1>
+    <p class="lede">
+      That page doesn't exist (anymore). Try the <a href="/posts/">post archive</a> or head <a href="/">home</a>.
+    </p>
+  </article>
+  <script is:inline define:vars={{ slugs }}>
+    (() => {
+      const path = location.pathname.toLowerCase();
+      // Old WP attachment pages: /category/post/attachment/name/ → the post itself.
+      const attachment = path.match(/^(\/[^/]+\/[^/]+\/)attachment\//);
+      if (attachment && Object.values(slugs).includes(attachment[1])) return location.replace(attachment[1]);
+
+      const segment = path
+        .replace(/\/default\.aspx$/, '')
+        .split('/')
+        .filter(Boolean)
+        .pop();
+      if (!segment) return;
+      const exact = slugs[segment];
+      const prefixed = Object.keys(slugs).filter((s) => s.startsWith(segment));
+      const target = exact ?? (prefixed.length === 1 ? slugs[prefixed[0]] : undefined);
+      if (target && target !== location.pathname) location.replace(target);
+    })();
+  </script>
+</BaseLayout>

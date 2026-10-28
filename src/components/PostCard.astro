@@ -1,0 +1,28 @@
+---
+import { categoryName, categoryUrl, formatDate, postUrl, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const { title, date, category, description, image } = post.data;
+---
+
+<article class="post-card">
+  {
+    image && (
+      <a class="post-card-image" href={postUrl(post)} tabindex="-1" aria-hidden="true">
+        <img src={image.src} alt="" loading="lazy" decoding="async" />
+      </a>
+    )
+  }
+  <div class="post-card-body">
+    <p class="meta">
+      <a href={categoryUrl(category)}>{categoryName(category)}</a>
+      <span aria-hidden="true">·</span>
+      <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    </p>
+    <h2 class="post-card-title"><a href={postUrl(post)}>{title}</a></h2>
+    {description && <p class="post-card-excerpt">{description}</p>}
+  </div>
+</article>
