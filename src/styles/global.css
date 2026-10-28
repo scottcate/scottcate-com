@@ -660,63 +660,63 @@ h1 {
   margin-bottom: 0.75rem;
 }
 
-.prose {
+:where(.prose) {
   font-family: var(--font-serif);
   font-size: 1.1875rem;
   line-height: 1.7;
 }
 
-.prose > :first-child {
+:where(.prose) > :first-child {
   margin-top: 0;
 }
 
-.prose h2 {
+:where(.prose) h2 {
   font-size: 1.625rem;
   margin: 2.25rem 0 0.75rem;
 }
 
-.prose h3 {
+:where(.prose) h3 {
   font-size: 1.3125rem;
   margin: 2rem 0 0.5rem;
 }
 
-.prose h4 {
+:where(.prose) h4 {
   font-size: 1.125rem;
 }
 
-.prose p,
-.prose ul,
-.prose ol,
-.prose blockquote,
-.prose pre,
-.prose table {
+:where(.prose) p,
+:where(.prose) ul,
+:where(.prose) ol,
+:where(.prose) blockquote,
+:where(.prose) pre,
+:where(.prose) table {
   margin: 0 0 1.25rem;
 }
 
-.prose li + li {
+:where(.prose) li + li {
   margin-top: 0.25rem;
 }
 
-.prose img {
+:where(.prose) img {
   display: block;
   margin: 1.5rem auto;
   border-radius: 8px;
 }
 
-.prose blockquote {
+:where(.prose) blockquote {
   margin-inline: 0;
   padding: 0.25rem 0 0.25rem 1.25rem;
   border-left: 3px solid var(--accent);
   color: var(--muted);
 }
 
-.prose hr {
+:where(.prose) hr {
   margin: 2.5rem 0;
   border: 0;
   border-top: 1px solid var(--border);
 }
 
-.prose table {
+:where(.prose) table {
   display: block;
   overflow-x: auto;
   border-collapse: collapse;
@@ -724,13 +724,13 @@ h1 {
   font-size: 0.9375rem;
 }
 
-.prose th,
-.prose td {
+:where(.prose) th,
+:where(.prose) td {
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--border);
 }
 
-.prose code {
+:where(.prose) code {
   font-family: var(--font-mono);
   font-size: 0.875em;
   padding: 0.125em 0.375em;
@@ -738,7 +738,7 @@ h1 {
   background: var(--code-bg);
 }
 
-.prose pre {
+:where(.prose) pre {
   overflow-x: auto;
   padding: 1rem 1.25rem;
   border: 1px solid var(--border);
@@ -748,7 +748,7 @@ h1 {
   line-height: 1.55;
 }
 
-.prose pre code {
+:where(.prose) pre code {
   padding: 0;
   background: none;
   font-size: inherit;
@@ -908,25 +908,188 @@ h1 {
   columns: 2;
 }
 
-.gallery {
+
+/* ---------- Profile photos: Monopoly "title deed" cards ---------- */
+
+.deed-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-  gap: 1.25rem;
-  margin: 1.5rem 0 0;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 2.5rem 2rem;
+  margin: 2rem 0 0;
   padding: 0;
   list-style: none;
 }
 
-.gallery img {
+.deed-gallery > li {
+  margin: 0;
+}
+
+/* Photo and card share one border and shadow so each caption reads as part of its photo. */
+.deed {
+  --deed-color: #1f4e9c;
+  --deed-ink: var(--text);
+  margin: 0;
+  overflow: hidden;
+  border: 2px solid var(--deed-ink);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--deed-ink) 85%, transparent), var(--shadow);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+.deed-gallery > li:nth-child(4n + 2) .deed {
+  --deed-color: #1d7a46;
+}
+
+.deed-gallery > li:nth-child(4n + 3) .deed {
+  --deed-color: #c8312b;
+}
+
+.deed-gallery > li:nth-child(4n + 4) .deed {
+  --deed-color: #e07b17;
+}
+
+.deed-photo {
+  position: relative;
+  display: block;
+  border-bottom: 2px solid var(--deed-ink);
+  background: var(--surface-2);
+}
+
+.deed-photo img {
   display: block;
   width: 100%;
   aspect-ratio: 1;
+  margin: 0;
+  border-radius: 0;
   object-fit: cover;
-  border-radius: var(--radius);
+  object-position: center top;
 }
 
-.gallery p {
-  margin: 0.5rem 0 0;
+.deed-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgb(20 22 26 / 0.78);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.deed-badge.is-ai {
+  background: rgb(91 33 182 / 0.85);
+}
+
+.deed-card {
+  padding: 0.75rem 0.75rem 1rem;
+  font-family: var(--font-sans);
+}
+
+.deed-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 0.875rem;
+  padding: 0.5rem 0.75rem 0.625rem;
+  border: 2px solid var(--deed-ink);
+  background: var(--deed-color);
+  color: #fff;
+  text-align: center;
+}
+
+.deed-kicker {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.deed-title {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.deed-card dl {
+  margin: 0 0.25rem;
+}
+
+.deed-card dl div,
+.deed-sizes a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3rem 0;
+  font-size: 0.875rem;
+}
+
+.deed-card dt {
+  color: var(--muted);
+}
+
+.deed-card dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.deed-sizes-label {
+  margin: 0.625rem 0.25rem 0.125rem;
+  padding-top: 0.625rem;
+  border-top: 1px dashed var(--border);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.deed-sizes {
+  margin: 0 0.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.deed-sizes li {
+  margin: 0;
+}
+
+.deed-sizes a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.deed-sizes a:hover span:first-child {
+  text-decoration: underline;
+}
+
+.deed-bytes {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.deed-alt {
+  margin: 0.75rem 0.25rem 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {

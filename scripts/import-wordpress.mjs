@@ -155,8 +155,9 @@ function removeLoopLogic(markdown) {
     .trim();
 }
 
-// Posts deliberately not carried over (their content was only LoopLogic videos).
-const EXCLUDED_SLUGS = new Set(['cameron-on-stage-this-morning', 'mcintosh-equipment']);
+// Posts not imported: the first two were only LoopLogic videos and were deleted;
+// the profile photos post is maintained by hand as .mdx.
+const EXCLUDED_SLUGS = new Set(['cameron-on-stage-this-morning', 'mcintosh-equipment', 'scott-cate-profile-photos']);
 
 // --- main -------------------------------------------------------------------
 
@@ -169,8 +170,11 @@ async function main() {
   const [posts, media] = await Promise.all([getAll('posts'), getAll('media')]);
   const mediaById = new Map(media.map((m) => [m.id, m]));
 
-  await fs.rm(POSTS_DIR, { recursive: true, force: true });
+  // Replace previously imported .md posts; hand-written .mdx posts are left alone.
   await fs.mkdir(POSTS_DIR, { recursive: true });
+  for (const file of await fs.readdir(POSTS_DIR)) {
+    if (file.endsWith('.md')) await fs.rm(path.join(POSTS_DIR, file));
+  }
   await fs.mkdir(DATA_DIR, { recursive: true });
 
   const td = makeTurndown();

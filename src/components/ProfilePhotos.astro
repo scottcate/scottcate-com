@@ -1,0 +1,69 @@
+---
+// Each photo sits on a Monopoly-style "title deed" card listing its details and
+// a link to every size we host.
+import { profilePhotos, type PhotoSize } from '../data/profile-photos';
+
+const formatBytes = (bytes: number) =>
+  bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
+const formatType = (src: string) => (src.endsWith('.png') ? 'PNG' : 'JPEG');
+const dimensions = (size: PhotoSize) => `${size.width} × ${size.height}`;
+---
+
+<ul class="deed-gallery">
+  {
+    profilePhotos.map((photo) => {
+      const [display] = photo.sizes;
+      return (
+        <li>
+          <figure class="deed">
+            <a class="deed-photo" href={display.src} target="_blank" rel="noopener">
+              <img
+                src={display.src}
+                alt={photo.alt}
+                width={display.width}
+                height={display.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <span class:list={['deed-badge', photo.aiGenerated ? 'is-ai' : 'is-real']}>
+                {photo.aiGenerated ? '✨ AI-generated' : '📷 Real photo'}
+              </span>
+            </a>
+            <figcaption class="deed-card">
+              <p class="deed-band">
+                <span class="deed-kicker">Title Deed</span>
+                <span class="deed-title">{photo.title}</span>
+              </p>
+              <dl>
+                <div>
+                  <dt>Format</dt>
+                  <dd>{formatType(display.src)}</dd>
+                </div>
+                <div>
+                  <dt>Origin</dt>
+                  <dd>{photo.aiGenerated ? 'AI-generated' : 'Real photo'}</dd>
+                </div>
+              </dl>
+              <p class="deed-sizes-label">{photo.sizes.length > 1 ? 'Available sizes' : 'Size'}</p>
+              <ul class="deed-sizes">
+                {photo.sizes.map((size) => (
+                  <li>
+                    <a href={size.src} target="_blank" rel="noopener">
+                      <span>{dimensions(size)} px</span>
+                      <span class="deed-bytes">
+                        {formatBytes(size.bytes)}
+                        <span aria-hidden="true"> ↗</span>
+                      </span>
+                      <span class="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p class="deed-alt">{photo.alt}</p>
+            </figcaption>
+          </figure>
+        </li>
+      );
+    })
+  }
+</ul>
