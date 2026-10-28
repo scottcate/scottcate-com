@@ -8,7 +8,7 @@ export const SITE = {
   author: 'Scott Cate',
   locale: 'en-US',
   timeZone: 'America/Phoenix',
-  avatar: '/wp-content/uploads/photo-gallery/imported_from_media_libray/scott-cate-profile-headhot.png',
+  avatar: '/wp-content/uploads/2025/02/scott-on-stage.jpeg',
   postsPerPage: 9,
 };
 

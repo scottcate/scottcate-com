@@ -7,7 +7,7 @@ export const person = {
   '@id': PERSON_ID,
   name: 'Scott Cate',
   url: 'https://scottcate.com',
-  image: 'https://secure.gravatar.com/avatar/3f1ea02fe9aa1d7c51712b1f20507730',
+  image: 'https://scottcate.com/wp-content/uploads/2025/02/scott-on-stage.jpeg',
   jobTitle: 'Technical Founder',
   description:
     'Scott Cate is a husband, father, author, and seasoned technical founder with expertise in software development, SaaS products, and marketing automation. He is the creator of 301.Pro, TeamCalendar.com, and Cruised.com',
