@@ -433,6 +433,16 @@ h1 {
   margin: 0 0 1.25rem;
 }
 
+.section-intro {
+  max-width: 44rem;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+}
+
+.section-intro p {
+  margin: 0 0 1rem;
+}
+
 .ventures {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
