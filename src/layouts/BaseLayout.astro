@@ -57,6 +57,8 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Old posts embed http:// images; load them over https so pages never show as "Not secure". -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
