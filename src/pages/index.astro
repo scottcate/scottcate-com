@@ -53,6 +53,7 @@ const categories = taxonomy.categories
         person.owns.map((org) => (
           <li>
             <a href={org.url} target="_blank" rel="noopener">
+              <img class="venture-logo" src={new URL(org.image).pathname} alt="" width="56" height="56" loading="lazy" />
               <strong>{org.name}</strong>
               <span>{org.description}</span>
             </a>

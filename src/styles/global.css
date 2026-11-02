@@ -443,13 +443,26 @@ h1 {
   margin: 0 0 1rem;
 }
 
+/* Three across at most, two on tablets, one on phones. */
 .ventures {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@media (max-width: 56rem) {
+  .ventures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .ventures {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ventures a {
@@ -471,6 +484,13 @@ h1 {
   transform: translateY(-2px);
 }
 
+.venture-logo {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 22%;
+}
+
 .ventures strong {
   font-family: var(--font-serif);
   font-size: 1.125rem;
@@ -479,6 +499,27 @@ h1 {
 .ventures span {
   color: var(--muted);
   font-size: 0.9375rem;
+}
+
+/* Two- and one-column cards: logo sits beside the title, description runs full width below. */
+@media (max-width: 56rem) {
+  .ventures a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: start;
+    align-items: center;
+    column-gap: 0.75rem;
+  }
+
+  .ventures span {
+    grid-column: 1 / -1;
+  }
+
+  .venture-logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0;
+  }
 }
 
 .chips {
