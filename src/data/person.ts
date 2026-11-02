@@ -76,8 +76,8 @@ export const person = {
     },
     {
       '@type': 'SoftwareApplication',
-      name: 'Holdem-Trainer.com',
-      url: 'https://holdem-trainer.com',
+      name: 'HoldemTrainer.com',
+      url: 'https://holdemtrainer.com',
       image: 'https://scottcate.com/images/logos/holdem-trainer.png',
       operatingSystem: 'iOS',
       applicationCategory: 'GameApplication',
